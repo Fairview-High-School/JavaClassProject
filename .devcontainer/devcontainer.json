@@ -1,57 +1,55 @@
 {
-  "name": "Java Dev Container",
-
-  // Prebuilt base image with Java + common tools (Maven, Gradle) already set up.
-  // Change "21" to "17" or "11" if your course targets a different JDK version.
+  // AP / IB Computer Science - shared starter-repo container.
+  // Image only, no "features" block: a features block makes Codespaces build a
+  // derived image at creation instead of pulling this one ready-made.
+  "name": "AP/IB Computer Science - Java 21",
   "image": "mcr.microsoft.com/devcontainers/java:21",
-
-  // Optional: pull in extra tooling via Dev Container Features
-  // (uncomment if you want these auto-installed too)
-  // "features": {
-  //   "ghcr.io/devcontainers/features/git:1": {}
-  // },
 
   "customizations": {
     "vscode": {
+      // Three extensions, not the full Java pack. The pack also pulls in Maven,
+      // Gradle and Project Manager, which this course never uses and which the
+      // language server then spends time importing.
+      //   redhat.java              - language support, compile, errors
+      //   vscjava.vscode-java-debug - the Run | Debug buttons above main()
+      //   editorconfig.editorconfig - makes VS Code obey .editorconfig
       "extensions": [
-        "vscjava.vscode-java-pack",   // Java Extension Pack (Language Support, Debugger, Test Runner, Maven, Project Manager)
-        "vscjava.vscode-java-debug",
-        "vscjava.vscode-java-test",
-        "vscjava.vscode-maven",
         "redhat.java",
-        "streetsidesoftware.code-spell-checker"
+        "vscjava.vscode-java-debug",
+        "editorconfig.editorconfig"
       ],
+
       "settings": {
         "java.configuration.updateBuildConfiguration": "automatic",
         "editor.formatOnSave": true,
+        "editor.renderWhitespace": "boundary",
+        "editor.tabSize": 4,
+        "editor.insertSpaces": true,
+        "files.autoSave": "afterDelay",
 
-        // --- Disable AI code suggestions by default ---
-        // Note: these are workspace-level defaults, not a hard lock —
-        // a student could still re-enable them in their own user settings.
+        // --- AI code suggestions off by default ---
+        // Workspace defaults, not a lock. A student can still turn these back
+        // on in their own user settings. See TEMPLATE_NOTES.md.
         "github.copilot.enable": {
           "*": false,
-          "plaintext": false,
+          "java": false,
           "markdown": false,
-          "java": false
+          "plaintext": false
         },
         "github.copilot.editor.enableAutoCompletions": false,
         "editor.inlineSuggest.enabled": false
       },
-      // Extensions listed here will NOT be auto-recommended/installed,
-      // and if already present, this signals they're unwanted for this project.
+
+      // Not auto-recommended, and flagged as unwanted if already installed.
       "unwantedRecommendations": [
         "github.copilot",
         "github.copilot-chat",
-        "github.copilot-labs",
         "codeium.codeium",
-        "tabnine.tabnine-vscode"
+        "tabnine.tabnine-vscode",
+        "continue.continue"
       ]
     }
   },
 
-  // Runs once, after the container is created (e.g. install deps, print welcome message)
-  "postCreateCommand": "echo 'Dev container ready. Run: javac Main.java && java Main'",
-
-  // Forward a port if students' projects run a local server (adjust or remove as needed)
-  "forwardPorts": [8080]
+  "postCreateCommand": "java -version"
 }
